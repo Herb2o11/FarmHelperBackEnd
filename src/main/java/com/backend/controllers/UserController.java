@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,8 @@ public class UserController {
 	    return "login";
 	}*/
 	
+	
+	@CrossOrigin 
 	@PostMapping("/login")
 	public Map<String, String> login(@RequestBody User user) {
 		Boolean chq = false;
@@ -51,9 +54,9 @@ public class UserController {
 		}
 		Map<String, String> response = new HashMap<>();
 		if(chq) {
-			response.put("TOKEN", MD5.getMd5(user.getEmailAddress()));
+			response.put("token", MD5.getMd5(user.getEmailAddress()));
 		} else {
-			response.put("ERROR", "User not found or wrong password");
+			response.put("error", "User not found or wrong password");
 		}
 		return response ;
 		

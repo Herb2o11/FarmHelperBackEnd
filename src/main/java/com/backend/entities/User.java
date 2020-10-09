@@ -1,5 +1,6 @@
 package com.backend.entities;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ public class User {
 	@javax.persistence.Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id = 0;
+	@Column (unique = true)
 	private String emailAddress = "";
 	private String password = "";
 	@Transient String cleanPass;
