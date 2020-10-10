@@ -55,6 +55,7 @@ public class UserController {
 		Map<String, String> response = new HashMap<>();
 		if(chq) {
 			response.put("token", MD5.getMd5(user.getEmailAddress()));
+			response.put("userid", String.valueOf(user.getUseId()));
 		} else {
 			response.put("error", "User not found or wrong password");
 		}

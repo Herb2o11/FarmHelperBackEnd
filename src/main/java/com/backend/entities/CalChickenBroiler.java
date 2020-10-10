@@ -3,12 +3,11 @@ package com.backend.entities;
 import javax.persistence.Entity;
 
 @Entity
-public class CalChickenEggs extends Calculator {
+public class CalChickenBroiler extends Calculator {
 	
 	private int chickens = 0;
 	private double area = 0;
 	private double food = 0;
-	private int egs = 0;
 	private String lockedfields;
 
 	/** Graph State Variables */
@@ -16,7 +15,6 @@ public class CalChickenEggs extends Calculator {
 	private double chickPrice = 0;
 	private double chickenPrice = 0;
 	private double foodPrice = 0;
-	private double eggsPrice = 0;
 	private double rent = 0;
 	private int staff = 0;
 	private int chickenMaturity = 0;
@@ -24,7 +22,6 @@ public class CalChickenEggs extends Calculator {
 	private int period = 12;
 
 	
-
 	public int getChickens() {
 		return chickens;
 	}
@@ -49,14 +46,6 @@ public class CalChickenEggs extends Calculator {
 		this.food = food;
 	}
 
-	public int getEgs() {
-		return egs;
-	}
-
-	public void setEgs(int egs) {
-		this.egs = egs;
-	}
-
 	public double getChickPrice() {
 		return chickPrice;
 	}
@@ -79,14 +68,6 @@ public class CalChickenEggs extends Calculator {
 
 	public void setFoodPrice(double foodPrice) {
 		this.foodPrice = foodPrice;
-	}
-
-	public double getEggsPrice() {
-		return eggsPrice;
-	}
-
-	public void setEggsPrice(double eggsPrice) {
-		this.eggsPrice = eggsPrice;
 	}
 
 	public double getRent() {
@@ -139,7 +120,8 @@ public class CalChickenEggs extends Calculator {
 
 	@Override
 	public String getType() {
-		return "ChickenEggs";
+		return "ChickenBroiler";
+		
 	}
 
 	@Override

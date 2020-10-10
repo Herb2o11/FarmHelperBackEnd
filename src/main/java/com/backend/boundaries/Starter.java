@@ -18,7 +18,6 @@ public class Starter {
 public String start() {
 
 	User user = new User();
-	
 	user.setEmailAddress("herbert@gmail.com");
 	user.setPassword("123");
 	uDAO.save(user);

@@ -1,9 +1,12 @@
 package com.backend.entities;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,19 +15,26 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class User {
 	@javax.persistence.Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id = 0;
+	private int userId = 0;
 	@Column (unique = true)
 	private String emailAddress = "";
 	private String password = "";
 	@Transient String cleanPass;
 	private boolean active = true;
+	@OneToMany(mappedBy="user")
+    private Set<Calculator> items;
 	
+	public User() {}
 	
-	public int getId() {
-		return id;
+	public User(int userId) {
+		this.userId = userId;
 	}
-	public void setId(int id) {
-		this.id = id;
+	
+	public int getUseId() {
+		return userId;
+	}
+	public void setUserId(int id) {
+		this.userId = id;
 	}
 	public String getEmailAddress() {
 		return emailAddress;
