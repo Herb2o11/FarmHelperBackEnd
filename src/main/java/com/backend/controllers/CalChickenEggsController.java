@@ -8,20 +8,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.boundaries.CalChickenBroilerDAO;
-import com.backend.entities.CalChickenBroiler;
+import com.backend.boundaries.CalChickenEggsDAO;
+import com.backend.entities.CalChickenEggs;
 
 @RestController
 public class CalChickenEggsController {
 
 	@Autowired
-	CalChickenBroilerDAO chbDAO;
+	CalChickenEggsDAO chkDAO;
 	
 	@CrossOrigin 
-	@PostMapping("/calchickenbroiler")
-	public ResponseEntity<CalChickenBroiler> newCalChickenBroiler (@RequestBody CalChickenBroiler calChickenEggs) {
-		calChickenEggs = chbDAO.save(calChickenEggs);
-		return new ResponseEntity<CalChickenBroiler>(calChickenEggs,HttpStatus.OK);
+	@PostMapping("/calchickeneggs")
+	public ResponseEntity<CalChickenEggs> newCalChickeneggs (@RequestBody CalChickenEggs calChickenEggs) {
+		calChickenEggs = chkDAO.save(calChickenEggs);
+		return new ResponseEntity<CalChickenEggs>(calChickenEggs,HttpStatus.OK);
+		
 	}
 	
 }
