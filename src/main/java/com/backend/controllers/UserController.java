@@ -1,103 +1,52 @@
 package com.backend.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.FarmHelper.JwtUserDetailsService;
 import com.backend.boundaries.UserDAO;
-import com.backend.entities.JwtRequest;
 import com.backend.entities.User;
 
 @RestController
 public class UserController {
 	
-	/*
+	
 	@Autowired
 	UserDAO uDAO;
-	
-	// Original!
-	@CrossOrigin 
-	@PostMapping("/login")
-	public Map<String, String> login(@RequestBody User user) {
-		Boolean chq = false;
-		User dbUser = uDAO.findByEmailAddress(user.getEmailAddress());
-		if(dbUser instanceof  User) {
-			chq = dbUser.checkPassword(user.getCleanPass());			
-		}
-		Map<String, String> response = new HashMap<>();
-		if(chq) {
-			response.put("token", MD5.getMd5(dbUser.getEmailAddress()));
-			response.put("userid", String.valueOf(dbUser.getUseId()));
-		} else {
-			response.put("error", "User not found or wrong password");
-		}
-		return response ;
-		
-	}
-	
-	*/
-	
-	
-	
-	@Autowired
-	private AuthenticationManager authenticationManager;
+
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-	@Autowired
-	private JwtUserDetailsService userDetailsService;
 	
 	@PostMapping("/authenticate")
-	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-		final UserDetails userDetails = userDetailsService
-				.loadUserByUsername(authenticationRequest.getUsername());
-		final String token = jwtTokenUtil.generateToken(userDetails);
+	public ResponseEntity<Map<String, String>> createAuthenticationToken(@RequestBody User authenticationRequest) throws Exception {
+		System.out.println("NO METODO =>"+authenticationRequest.getUsername()+" ("+authenticationRequest.getCleanPass()+")");
 		Map<String, String> response = new HashMap<>();
-		response.put("token", token);
-		return ResponseEntity.ok(response);
-	}
-	
-//	@PostMapping("/authenticate")
-//	public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) throws Exception {
-////		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-//		User dbUser = uDAO.findByUsername(user.getUsername());
-//		if(dbUser instanceof  User) {
-//			dbUser.checkPassword(user.getCleanPass());			
-//		} else {
-//			throw new Exception("INVALID_CREDENTIALS");
-//		}
-////		final UserDetails userDetails = userDetailsService
-////				.loadUserByUsername(authenticationRequest.getUsername());
-//		final String token = jwtTokenUtil.generateToken(dbUser);
-//		Map<String, String> response = new HashMap<>();
-//		response.put("token", token);
-//		return ResponseEntity.ok(response);
-//	}
-	
-	private void authenticate(String username, String password) throws Exception {
 		try {
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-		} catch (DisabledException e) {
-			throw new Exception("USER_DISABLED", e);
-		} catch (BadCredentialsException e) {
-			throw new Exception("INVALID_CREDENTIALS", e);
+			User dbUser = uDAO.findByUsername(authenticationRequest.getUsername());
+			System.out.println(dbUser.toString());
+			if(dbUser instanceof  User) {
+				System.out.println("User =>"+dbUser.getUsername());
+				dbUser.checkPassword(authenticationRequest.getCleanPass());
+				System.out.println("user Good");
+			} else {
+				System.out.println("No User Object");
+				throw new Exception("INVALID_CREDENTIALS");
+			}
+			final String token = jwtTokenUtil.generateToken(dbUser);
+			response.put("token", token);
+			return ResponseEntity.ok(response);
+		} catch (Exception e) {
+			response.put("error", "couldn't authenticate the user");
 		}
+		return new ResponseEntity<Map<String, String>>(response, HttpStatus.UNAUTHORIZED);
 	}
+
 	
 }

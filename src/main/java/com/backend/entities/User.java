@@ -1,5 +1,6 @@
 package com.backend.entities;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,7 +14,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-public class User {
+public class User implements Serializable  {
+	/**
+	 * 
+	 */
+	
+	@Transient private static final long serialVersionUID = 1L;
+	
 	@javax.persistence.Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int userId = 0;
