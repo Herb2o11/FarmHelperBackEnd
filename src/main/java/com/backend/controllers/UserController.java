@@ -8,42 +8,32 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.FarmHelper.JwtUserDetailsService;
 import com.backend.boundaries.MD5;
 import com.backend.boundaries.UserDAO;
+import com.backend.entities.JwtRequest;
+import com.backend.entities.JwtResponse;
 import com.backend.entities.User;
 
 @RestController
 public class UserController {
 	
+	/*
 	@Autowired
 	UserDAO uDAO;
 	
-	/*@ModelAttribute("user")
-	public User userForm() {
-		return new User();
-	}*/
-
-	/**
-	 * Method to show the initial HTML form
-	
-	 */
-	
-	/*@GetMapping("/login")
-	public String login(Model model) {
-	    User user = (User) model.addAttribute("user");
-	    if(user!= null) {
-	    	return "login-success";
-	    }
-	    return "login";
-	}*/
-	
-	
+	// Original!
 	@CrossOrigin 
 	@PostMapping("/login")
 	public Map<String, String> login(@RequestBody User user) {
@@ -54,8 +44,8 @@ public class UserController {
 		}
 		Map<String, String> response = new HashMap<>();
 		if(chq) {
-			response.put("token", MD5.getMd5(user.getEmailAddress()));
-			response.put("userid", String.valueOf(user.getUseId()));
+			response.put("token", MD5.getMd5(dbUser.getEmailAddress()));
+			response.put("userid", String.valueOf(dbUser.getUseId()));
 		} else {
 			response.put("error", "User not found or wrong password");
 		}
@@ -63,22 +53,33 @@ public class UserController {
 		
 	}
 	
-//	@PostMapping("/login") 
-//	public String login(@ModelAttribute("user") User user){
-//		System.out.println("User before => " + user.getEmailAddress());
-//		Iterable<User> userList = uDAO.findByEmailAddress(user.getEmailAddress());
-//		user = userList.iterator().next();
-//		System.out.println("User after => " + user);
-//		if(user==null) {
-//			System.out.println("Login Fail");
-//		}
-//
-//		if(user != null && user.getHashPassword().equals(uDAO.getUsers())) {
-//			
-//			System.out.println("Login Successful");
-//			return "index/index";
-//		}
-//		return "login/login";
-//	}
+	*/
+	
+	
+	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private JwtUserDetailsService userDetailsService;
+	
+	@PostMapping("/authenticate")
+	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+		final UserDetails userDetails = userDetailsService
+				.loadUserByUsername(authenticationRequest.getUsername());
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		return ResponseEntity.ok(new JwtResponse(token));
+	}
+	private void authenticate(String username, String password) throws Exception {
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		} catch (DisabledException e) {
+			throw new Exception("USER_DISABLED", e);
+		} catch (BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
+	}
 	
 }

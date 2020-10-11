@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan({"com.backend.controllers","com.backend.boundaries"})
+@ComponentScan({"com.backend.controllers","com.backend.boundaries", "com.backend.FarmHelper"})
 @EntityScan("com.backend.entities")
 @EnableJpaRepositories("com.backend.boundaries")
 public class FarmHelperApplication {
@@ -16,5 +16,4 @@ public class FarmHelperApplication {
 		SpringApplication.run(FarmHelperApplication.class, args);
 		
 	}
-
 }
