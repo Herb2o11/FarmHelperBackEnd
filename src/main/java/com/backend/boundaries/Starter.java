@@ -17,11 +17,9 @@ public class Starter {
 @ResponseBody
 public String start() {
 
-	User user = new User();
-	user.setEmailAddress("herbert@gmail.com");
-	user.setPassword("123");
+	User user = new User("herbert@gmail.com","123");
 	uDAO.save(user);
-	return "";
+	return "Done";
 }
 	
 	

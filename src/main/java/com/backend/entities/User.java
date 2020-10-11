@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
@@ -17,7 +18,7 @@ public class User {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int userId = 0;
 	@Column (unique = true)
-	private String emailAddress = "";
+	private String username = "";
 	private String password = "";
 	@Transient String cleanPass;
 	private boolean active = true;
@@ -30,29 +31,28 @@ public class User {
 		this.userId = userId;
 	}
 	
+	public User(String username, String password) {
+		this.setUsername(username);
+		this.setPassword(password);
+	}
+	
 	public int getUseId() {
 		return userId;
 	}
 	public void setUserId(int id) {
 		this.userId = id;
 	}
-	public String getEmailAddress() {
-		return emailAddress;
+	
+	public String getUsername() {
+		return this.username;
 	}
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	
+	public void setUsername(String username) {
+		this.username = username;
 	}
+	
 	public String getPassword() {
 		return password;
-	}
-//	public void setPassword(String password) {
-//		this.password = password;
-//	}
-	public boolean isActive() {
-		return active;
-	}
-	public void setActive(boolean active) {
-		this.active = active;
 	}
 	
 	public String getCleanPass() {
@@ -65,10 +65,20 @@ public class User {
 		this.password = bcrypt.encode(pass);
 	}
 	
-	public boolean checkPassword(String cleanPass) {
+	public void checkPassword(String cleanPass) throws BadCredentialsException {
 		BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
-		return bcrypt.matches(cleanPass,this.password);		
+		if(!bcrypt.matches(cleanPass,this.password)) {
+			throw new BadCredentialsException("Bad Credentials");
+		}
 	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+	
 }
 
 

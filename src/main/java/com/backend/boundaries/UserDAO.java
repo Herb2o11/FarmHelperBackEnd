@@ -7,6 +7,6 @@ import com.backend.entities.User;
 
 @Component
 public interface UserDAO extends CrudRepository <User, Integer> {
-	User findByEmailAddress(String emailAddress);
+	User findByUsername(String username);
 	
 }

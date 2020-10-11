@@ -20,10 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.FarmHelper.JwtUserDetailsService;
-import com.backend.boundaries.MD5;
 import com.backend.boundaries.UserDAO;
 import com.backend.entities.JwtRequest;
-import com.backend.entities.JwtResponse;
 import com.backend.entities.User;
 
 @RestController
@@ -70,8 +68,28 @@ public class UserController {
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		return ResponseEntity.ok(new JwtResponse(token));
+		Map<String, String> response = new HashMap<>();
+		response.put("token", token);
+		return ResponseEntity.ok(response);
 	}
+	
+//	@PostMapping("/authenticate")
+//	public ResponseEntity<?> createAuthenticationToken(@RequestBody User user) throws Exception {
+////		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+//		User dbUser = uDAO.findByUsername(user.getUsername());
+//		if(dbUser instanceof  User) {
+//			dbUser.checkPassword(user.getCleanPass());			
+//		} else {
+//			throw new Exception("INVALID_CREDENTIALS");
+//		}
+////		final UserDetails userDetails = userDetailsService
+////				.loadUserByUsername(authenticationRequest.getUsername());
+//		final String token = jwtTokenUtil.generateToken(dbUser);
+//		Map<String, String> response = new HashMap<>();
+//		response.put("token", token);
+//		return ResponseEntity.ok(response);
+//	}
+	
 	private void authenticate(String username, String password) throws Exception {
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
