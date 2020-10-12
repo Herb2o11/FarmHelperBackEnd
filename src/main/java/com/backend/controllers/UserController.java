@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.FarmHelper.JwtTokenUtil;
 import com.backend.boundaries.UserDAO;
 import com.backend.entities.User;
 
@@ -26,17 +27,13 @@ public class UserController {
 	
 	@PostMapping("/authenticate")
 	public ResponseEntity<Map<String, String>> createAuthenticationToken(@RequestBody User authenticationRequest) throws Exception {
-		System.out.println("NO METODO =>"+authenticationRequest.getUsername()+" ("+authenticationRequest.getCleanPass()+")");
+		// System.out.println("NO METODO =>"+authenticationRequest.getUsername()+" ("+authenticationRequest.getCleanPass()+")");
 		Map<String, String> response = new HashMap<>();
 		try {
 			User dbUser = uDAO.findByUsername(authenticationRequest.getUsername());
-			System.out.println(dbUser.toString());
 			if(dbUser instanceof  User) {
-				System.out.println("User =>"+dbUser.getUsername());
 				dbUser.checkPassword(authenticationRequest.getCleanPass());
-				System.out.println("user Good");
 			} else {
-				System.out.println("No User Object");
 				throw new Exception("INVALID_CREDENTIALS");
 			}
 			final String token = jwtTokenUtil.generateToken(dbUser);

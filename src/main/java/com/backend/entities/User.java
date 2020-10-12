@@ -15,9 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 public class User implements Serializable  {
-	/**
-	 * 
-	 */
 	
 	@Transient private static final long serialVersionUID = 1L;
 	

@@ -1,4 +1,4 @@
-package com.backend.controllers;
+package com.backend.FarmHelper;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,12 +26,10 @@ public class JwtTokenUtil implements Serializable {
 
 	//retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
-		System.out.println("Username =>" +(getClaimFromToken(token, Claims::getSubject)).toString());
 		return getClaimFromToken(token, Claims::getSubject);
 	}
 	//retrieve expiration date from jwt token
 	public Date getExpirationDateFromToken(String token) {
-		System.out.println("Expiration =>" +(getClaimFromToken(token, Claims::getExpiration)).toString());
 		return getClaimFromToken(token, Claims::getExpiration);
 	}
 	public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
@@ -59,8 +57,10 @@ public class JwtTokenUtil implements Serializable {
 	//3. According to JWS Compact Serialization(https://tools.ietf.org/html/draft-ietf-jose-json-web-signature-41#section-3.1)
 	//   compaction of the JWT to a URL-safe string 
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
+		Date date = new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000);
+		System.out.println("Token Generated to =>"+subject+" > Valid until =>"+date.toString());
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+				.setExpiration(date)
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 	//validate token
