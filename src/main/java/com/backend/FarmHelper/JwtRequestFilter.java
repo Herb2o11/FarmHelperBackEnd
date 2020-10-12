@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.backend.boundaries.UserDAO;
@@ -30,6 +31,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		
 		final String requestTokenHeader = request.getHeader("Authorization");
+		System.out.println("ACCEPT => " + request.getHeader("Accept"));
+//		final String requestTokenHeader ="Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoZXJiZXJ0QGdtYWlsLmNvbSIsImV4cCI6MTYwMjQ4ODgzMiwiaWF0IjoxNjAyNDcwODMyfQ.w8ZPK08p4gq848lLGsOODUEdc4aDSdzOFGAyw0WktMpXGmGX7y8URl4YQkxYsTDsxIQQP64TSHLJVEDo6IcHHw";
+		System.out.println("AUTHORIZATION => " + requestTokenHeader);
 		String username = null;
 		String jwtToken = null;
 		// JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
