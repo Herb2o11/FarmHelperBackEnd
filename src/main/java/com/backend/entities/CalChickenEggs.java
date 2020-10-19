@@ -8,7 +8,7 @@ public class CalChickenEggs extends Calculator {
 	private int chickens = 0;
 	private double area = 0;
 	private double food = 0;
-	private int eggs = 0;
+//	private int eggs = 0;
 	private String lockedfields;
 
 	/** Graph State Variables */
@@ -20,7 +20,7 @@ public class CalChickenEggs extends Calculator {
 	private double rent = 0;
 	private int staff = 0;
 	private int chickenMaturity = 0;
-	private int eggsMaturity = 0;
+//	private int eggsMaturity = 0;
 	private double deathRate = 0;
 	private int period = 12;
 
@@ -50,13 +50,13 @@ public class CalChickenEggs extends Calculator {
 		this.food = food;
 	}
 
-	public int getEggs() {
-		return eggs;
-	}
-
-	public void setEggs(int eggs) {
-		this.eggs = eggs;
-	}
+//	public int getEggs() {
+//		return eggs;
+//	}
+//
+//	public void setEggs(int eggs) {
+//		this.eggs = eggs;
+//	}
 
 	public double getChickPrice() {
 		return chickPrice;
@@ -138,13 +138,13 @@ public class CalChickenEggs extends Calculator {
 		this.lockedfields = lockedfields;
 	}
 
-	public int getEggsMaturity() {
-		return eggsMaturity;
-	}
-
-	public void setEggsMaturity(int eggsMaturity) {
-		this.eggsMaturity = eggsMaturity;
-	}
+//	public int getEggsMaturity() {
+//		return eggsMaturity;
+//	}
+//
+//	public void setEggsMaturity(int eggsMaturity) {
+//		this.eggsMaturity = eggsMaturity;
+//	}
 
 	@Override
 	public String getType() {
