@@ -27,6 +27,23 @@ public class UserController {
 	private JwtTokenUtil jwtTokenUtil;
 	
 	@CrossOrigin 
+	@PostMapping("/newuser")
+	public ResponseEntity<Map<String, String>> createUser(@RequestBody User newUser) {
+		Map<String, String> response = new HashMap<>();
+		User alreadyExist = uDAO.findByUsername(newUser.getUsername());
+
+		if(alreadyExist instanceof User) {
+			response.put("status", "danger");
+			response.put("message", "User already exist!");
+		} else {
+			uDAO.save(newUser);
+			response.put("status", "success");
+			response.put("message", "User Created");
+		}
+		return  ResponseEntity.ok(response);
+	}
+	
+	@CrossOrigin 
 	@PostMapping("/authenticate")
 	public ResponseEntity<Map<String, String>> createAuthenticationToken(@RequestBody User authenticationRequest) throws Exception {
 		// System.out.println("NO METODO =>"+authenticationRequest.getUsername()+" ("+authenticationRequest.getCleanPass()+")");
