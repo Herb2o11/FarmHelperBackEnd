@@ -1,7 +1,5 @@
 package com.backend.controllers;
 
-import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +39,7 @@ public class CalChickenEggsController {
 		if(calculator.getUser().getUseId()!=userId) {
 			calculator = null;
 		} 
-		return new ResponseEntity<CalChickenEggs>(calculator,HttpStatus.OK);	
-		
-		
+		return new ResponseEntity<CalChickenEggs>(calculator,HttpStatus.OK);		
 	}
 }
 

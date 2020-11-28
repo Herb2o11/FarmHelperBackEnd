@@ -120,7 +120,7 @@ public class CalChickenBroiler extends Calculator {
 
 	@Override
 	public String getType() {
-		return "ChickenBroiler";
+		return "broiler";
 		
 	}
 

@@ -148,7 +148,7 @@ public class CalChickenEggs extends Calculator {
 
 	@Override
 	public String getType() {
-		return "ChickenEggs";
+		return "eggs";
 	}
 
 	@Override

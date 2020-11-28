@@ -35,6 +35,7 @@ public class CalculatorController {
 		User user = new User(id);
 		chkDAO.findAllByUser(user).forEach(calculators::add);
 		chbDAO.findAllByUser(user).forEach(calculators::add);
+		System.out.println(calculators.size());
 		return new ResponseEntity<List<Calculator>>(calculators,HttpStatus.OK);
 	}
 	
