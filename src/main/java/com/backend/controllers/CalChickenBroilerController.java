@@ -19,9 +19,9 @@ public class CalChickenBroilerController {
 	
 	@CrossOrigin 
 	@PostMapping("/calchickenbroiler")
-	public ResponseEntity<CalChickenBroiler> newCalChickenBroiler (@RequestBody CalChickenBroiler calChickenEggs) {
-		calChickenEggs = chbDAO.save(calChickenEggs);
-		return new ResponseEntity<CalChickenBroiler>(calChickenEggs,HttpStatus.OK);
+	public ResponseEntity<CalChickenBroiler> newCalChickenBroiler (@RequestBody CalChickenBroiler calChickenBroiler) {
+		calChickenBroiler = chbDAO.save(calChickenBroiler);
+		return new ResponseEntity<CalChickenBroiler>(calChickenBroiler,HttpStatus.OK);
 	}
 	
 }
