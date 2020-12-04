@@ -29,6 +29,9 @@ public class CalChickenBroilerController {
 		final int id = (Integer) request.getAttribute("userId");
 		calChickenBroiler.setUser(new User(id));
 		calChickenBroiler = chbDAO.save(calChickenBroiler);
+		
+		
+		
 		return new ResponseEntity<CalChickenBroiler>(calChickenBroiler,HttpStatus.OK);
 	}
 	
